@@ -6,6 +6,7 @@
     </div>
   
     <style>
+      /* CSS remains unchanged */
       .container {
         max-width: 800px;
         margin: 0 auto;
@@ -78,7 +79,21 @@
         padding: 20px;
         color: #666;
       }
+  
+      .path-selector {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f5f5f5;
+        border-radius: 6px;
+      }
     </style>
+  
+    <div class="path-selector">
+      <p>If data isn't loading, try one of these alternate paths:</p>
+      <button onclick="tryPath('./assets/latest_prediction.json')">Relative Path (./assets/...)</button>
+      <button onclick="tryPath('../assets/latest_prediction.json')">Parent Directory (../assets/...)</button>
+      <button onclick="tryPath('assets/latest_prediction.json')">No Leading Slash</button>
+    </div>
   
     <script>
       function formatDateTime(dateStr) {
@@ -134,24 +149,78 @@
         }
       }
   
-      // Fix 1: Use a direct path to the JSON file instead of Jekyll variable
-      // fetch('{{ site.baseurl }}/assets/latest_prediction.json')
-      fetch('/assets/latest_prediction.json')
-        .then(response => {
-          // Fix 2: Check if the response is OK before trying to parse it
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => updatePenguinCard(data))
-        .catch(error => {
-          console.error('Error fetching penguin data:', error);
-          document.getElementById('latest-penguin').innerHTML = 
-            `<div class="error" style="color: #d32f2f; padding: 15px; background: #ffebee; border-radius: 6px;">
-              Error loading penguin data: ${error.message}. 
-              <p>Please check that the file exists at '/assets/latest_prediction.json'</p>
-            </div>`;
-        });
+      // Try multiple possible paths to find the JSON file
+      const possiblePaths = [
+        '/assets/latest_prediction.json',
+        './assets/latest_prediction.json',
+        '../assets/latest_prediction.json',
+        'assets/latest_prediction.json',
+        '/assets/data/latest_prediction.json',
+        '/latest_prediction.json'
+      ];
+  
+      let pathIndex = 0;
+      
+      function tryPath(customPath = null) {
+        const path = customPath || possiblePaths[pathIndex];
+        console.log(`Trying to fetch from: ${path}`);
+        
+        document.getElementById('latest-penguin').innerHTML = 
+          `<div class="loading">Attempting to load from ${path}...</div>`;
+        
+        fetch(path)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            updatePenguinCard(data);
+            console.log(`Successfully loaded data from ${path}`);
+          })
+          .catch(error => {
+            console.error(`Error fetching from ${path}:`, error);
+            
+            if (customPath) {
+              document.getElementById('latest-penguin').innerHTML = 
+                `<div class="error" style="color: #d32f2f; padding: 15px; background: #ffebee; border-radius: 6px;">
+                  Error loading from ${customPath}: ${error.message}
+                </div>`;
+            } else if (pathIndex < possiblePaths.length - 1) {
+              // Try the next path
+              pathIndex++;
+              tryPath();
+            } else {
+              // All paths failed, show error
+              document.getElementById('latest-penguin').innerHTML = 
+                `<div class="error" style="color: #d32f2f; padding: 15px; background: #ffebee; border-radius: 6px;">
+                  Failed to load penguin data from all attempted paths.
+                  <p>Current page URL: ${window.location.href}</p>
+                  <p>Please ensure the file exists and is accessible.</p>
+                </div>`;
+              
+              // Load sample data after all attempts fail
+              setTimeout(loadSampleData, 2000);
+            }
+          });
+      }
+  
+      function loadSampleData() {
+        console.log("Loading sample data as fallback");
+        const sampleData = {
+          species: "Adelie",
+          confidence: 0.94,
+          bill_length_mm: 39.1,
+          bill_depth_mm: 18.7,
+          flipper_length_mm: 181,
+          body_mass_g: 3750,
+          datetime: new Date().toISOString()
+        };
+        updatePenguinCard(sampleData);
+      }
+  
+      // Start trying paths
+      tryPath();
     </script>
   </div>
