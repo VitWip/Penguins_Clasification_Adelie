@@ -1,21 +1,14 @@
-title: Penguin Classification Project
-description: >-
-  A machine learning project that classifies penguin species based on their physical measurements,
-  featuring daily updates and historical data visualization.
-baseurl: "/Penguins_Clasification_Adelie"
+title: Penguin Classification Dashboard
+description: Displaying the latest classified penguin data
+baseurl: ""
 url: ""
 
-# Build settings
 theme: minima
-plugins:
-  - jekyll-feed
 
-# Exclude development-related files
 exclude:
-  - .git/
-  - .github/
-  - __pycache__/
-  - logs/
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
   - Gemfile
   - Gemfile.lock
   - node_modules/

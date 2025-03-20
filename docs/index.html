@@ -1,137 +1,145 @@
 ---
 layout: default
-title: Home
+title: Latest Penguin Classification
 ---
 
-<div class="container mt-5">
-    <div class="row mt-4">
-        <div class="col-12 mb-4">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h2 class="mb-0">Latest Penguin Classification</h2>
-                </div>
-                <div class="card-body" id="latest-prediction">
-                    <!-- Latest prediction will be loaded here -->
-                </div>
-            </div>
+<div class="container">
+  <h1>Latest Classified Penguin</h1>
+  
+  <div class="penguin-card" id="latest-penguin">
+    <div class="loading">Loading latest penguin data...</div>
+  </div>
+
+  <style>
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .penguin-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .penguin-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .detail-item {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 6px;
+    }
+
+    .detail-label {
+      font-weight: bold;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .detail-value {
+      font-size: 1.2em;
+      color: #333;
+    }
+
+    .species-prediction {
+      margin-top: 20px;
+      padding: 15px;
+      background: #e3f2fd;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .confidence-bar {
+      background: #ddd;
+      height: 20px;
+      border-radius: 10px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .confidence-level {
+      background: #4caf50;
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .timestamp {
+      text-align: right;
+      color: #666;
+      font-size: 0.9em;
+      margin-top: 10px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+    }
+  </style>
+
+  <script>
+    function formatDateTime(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleString();
+    }
+
+    function updatePenguinCard(data) {
+      const card = document.getElementById('latest-penguin');
+      if (!data) {
+        card.innerHTML = '<div class="error">No penguin data available</div>';
+        return;
+      }
+
+      card.innerHTML = `
+        <div class="species-prediction">
+          <h2>Predicted Species: ${data.species}</h2>
+          <div class="confidence-bar">
+            <div class="confidence-level" style="width: ${data.confidence * 100}%"></div>
+          </div>
+          <p>Confidence: ${(data.confidence * 100).toFixed(1)}%</p>
         </div>
 
-        <div class="col-12 mb-4">
-            <div class="card">
-                <div class="card-header bg-secondary text-white">
-                    <h2 class="mb-0">Historical Classifications</h2>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped" id="predictions-table">
-                            <thead>
-                                <tr>
-                                    <th>Date/Time</th>
-                                    <th>Species</th>
-                                    <th>Bill Length (mm)</th>
-                                    <th>Bill Depth (mm)</th>
-                                    <th>Flipper Length (mm)</th>
-                                    <th>Body Mass (g)</th>
-                                    <th>Confidence</th>
-                                </tr>
-                            </thead>
-                            <tbody id="predictions-body">
-                                <!-- Predictions will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+        <div class="penguin-details">
+          <div class="detail-item">
+            <div class="detail-label">Bill Length</div>
+            <div class="detail-value">${data.bill_length_mm} mm</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Bill Depth</div>
+            <div class="detail-value">${data.bill_depth_mm} mm</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Flipper Length</div>
+            <div class="detail-value">${data.flipper_length_mm} mm</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Body Mass</div>
+            <div class="detail-value">${data.body_mass_g} g</div>
+          </div>
         </div>
-        
-        <div class="col-md-6">
-            <h2>Model Performance</h2>
-            <img src="images/accuracy_comparison.png" alt="Model Accuracy Comparison" class="img-fluid mb-3">
-            <img src="images/feature_selection_frequency.png" alt="Feature Selection Frequency" class="img-fluid">
+
+        <div class="timestamp">
+          Classified on: ${formatDateTime(data.datetime)}
         </div>
-    </div>
-    
-    <div class="row mt-4">
-        <div class="col-12">
-            <h2>Feature Importance</h2>
-            <div class="row">
-                <div class="col-md-6">
-                    <img src="images/embedded_method_importance.png" alt="Embedded Method Importance" class="img-fluid">
-                </div>
-            </div>
-        </div>
-    </div>
+      `;
+    }
+
+    // Fetch and display the latest penguin data
+    fetch('/latest_prediction.json')
+      .then(response => response.json())
+      .then(data => updatePenguinCard(data))
+      .catch(error => {
+        console.error('Error fetching penguin data:', error);
+        document.getElementById('latest-penguin').innerHTML = 
+          '<div class="error">Error loading penguin data</div>';
+      });
+  </script>
 </div>
-
-<script>
-// Function to format date strings
-function formatDate(dateStr) {
-    const date = new Date(dateStr);
-    return date.toLocaleString();
-}
-
-// Function to format confidence values
-function formatConfidence(confidence) {
-    return confidence.toFixed(1) + '%';
-}
-
-// Function to display the latest prediction
-function displayLatestPrediction(prediction) {
-    const latestPredictionHtml = `
-        <div class="row">
-            <div class="col-md-6">
-                <h3 class="text-primary mb-3">${prediction.species}</h3>
-                <p class="lead">Confidence: ${formatConfidence(prediction.confidence)}</p>
-                <p class="text-muted">Classified at: ${formatDate(prediction.datetime)}</p>
-            </div>
-            <div class="col-md-6">
-                <h4>Measurements:</h4>
-                <ul class="list-unstyled">
-                    <li>Bill Length: ${prediction.bill_length_mm} mm</li>
-                    <li>Bill Depth: ${prediction.bill_depth_mm} mm</li>
-                    <li>Flipper Length: ${prediction.flipper_length_mm} mm</li>
-                    <li>Body Mass: ${prediction.body_mass_g} g</li>
-                </ul>
-            </div>
-        </div>
-    `;
-    document.getElementById('latest-prediction').innerHTML = latestPredictionHtml;
-}
-
-// Function to update the predictions table
-function updatePredictionsTable(predictions) {
-    const tableBody = document.getElementById('predictions-body');
-    tableBody.innerHTML = predictions.map(p => `
-        <tr>
-            <td>${formatDate(p.datetime)}</td>
-            <td>${p.species}</td>
-            <td>${p.bill_length_mm}</td>
-            <td>${p.bill_depth_mm}</td>
-            <td>${p.flipper_length_mm}</td>
-            <td>${p.body_mass_g}</td>
-            <td>${formatConfidence(p.confidence)}</td>
-        </tr>
-    `).join('');
-}
-
-// Fetch and display predictions
-fetch('{{ site.baseurl }}/_data/predictions.json')
-    .then(response => response.json())
-    .then(predictions => {
-        if (predictions && predictions.length > 0) {
-            // Display the latest prediction (first in the array)
-            displayLatestPrediction(predictions[0]);
-            // Update the predictions table with all predictions
-            updatePredictionsTable(predictions);
-        }
-    })
-    .catch(error => {
-        console.error('Error loading predictions:', error);
-        document.getElementById('latest-prediction').innerHTML = '<p class="text-danger">Error loading prediction data</p>';
-        document.getElementById('predictions-body').innerHTML = '<tr><td colspan="7" class="text-center text-danger">Error loading prediction data</td></tr>';
-    });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
