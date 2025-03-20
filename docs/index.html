@@ -140,7 +140,7 @@ title: Latest Penguin Classification
     }
 
     // Fetch and display the latest penguin data
-    fetch('/latest_prediction.json')
+    fetch('_data/latest_prediction.json')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

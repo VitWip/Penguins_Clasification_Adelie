@@ -19,7 +19,7 @@ from datetime import datetime
 
 def create_data_directory():
     """Create _data directory if it doesn't exist."""
-    data_dir = '_data'
+    data_dir = os.path.join('docs', '_data')
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
     return data_dir
