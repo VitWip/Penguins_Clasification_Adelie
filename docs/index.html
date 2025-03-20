@@ -64,19 +64,19 @@ title: Home
 </div>
 
 <script>
-// Function to format date
-function formatDate(dateString) {
-    const date = new Date(dateString);
+// Function to format date strings
+function formatDate(dateStr) {
+    const date = new Date(dateStr);
     return date.toLocaleString();
 }
 
-// Function to format confidence
+// Function to format confidence values
 function formatConfidence(confidence) {
-    return (confidence).toFixed(1) + '%';
+    return confidence.toFixed(1) + '%';
 }
 
-// Function to update the latest prediction
-function updateLatestPrediction(prediction) {
+// Function to display the latest prediction
+function displayLatestPrediction(prediction) {
     const latestPredictionHtml = `
         <div class="row">
             <div class="col-md-6">
@@ -118,12 +118,18 @@ function updatePredictionsTable(predictions) {
 fetch('_data/predictions.json')
     .then(response => response.json())
     .then(predictions => {
-        if (predictions.length > 0) {
-            updateLatestPrediction(predictions[0]);
+        if (predictions && predictions.length > 0) {
+            // Display the latest prediction (first in the array)
+            displayLatestPrediction(predictions[0]);
+            // Update the predictions table with all predictions
             updatePredictionsTable(predictions);
         }
     })
-    .catch(error => console.error('Error loading predictions:', error));
+    .catch(error => {
+        console.error('Error loading predictions:', error);
+        document.getElementById('latest-prediction').innerHTML = '<p class="text-danger">Error loading prediction data</p>';
+        document.getElementById('predictions-body').innerHTML = '<tr><td colspan="7" class="text-center text-danger">Error loading prediction data</td></tr>';
+    });
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
