@@ -1,7 +1,28 @@
-import seaborn as sns
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""Penguin Species Classification Model Training Module.
+
+This module implements various feature selection methods to train and evaluate
+a penguin species classification model. It compares different approaches:
+1. Filter Method (Mutual Information)
+2. Wrapper Method (Recursive Feature Elimination)
+3. Embedded Method (Random Forest Feature Importance)
+4. Permutation Importance
+
+The module performs the following operations:
+1. Loads and preprocesses penguin data from SQLite database
+2. Implements and evaluates different feature selection methods
+3. Compares method performance and selects the best model
+4. Saves the best performing model for future use
+5. Generates visualizations for feature importance and method comparison
+"""
+
+# Import required libraries for data manipulation, visualization, and machine learning
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import sqlite3
 from sklearn.feature_selection import SelectKBest, mutual_info_classif, RFE
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.inspection import permutation_importance
@@ -11,22 +32,31 @@ from sklearn.preprocessing import StandardScaler
 import joblib
 
 # Load and prepare data
-penguins = sns.load_dataset("penguins").dropna()
-data = penguins.drop(columns=['island', 'sex'])
+# Load data from SQLite database, excluding original entries (is_original != 1)
+conn = sqlite3.connect('penguins.db')
+query = "SELECT species, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g FROM penguins WHERE is_original != 1"
+data = pd.read_sql_query(query, conn)
+conn.close()
+
+# Clean and prepare the dataset
+data = data.dropna()
 data = data.sample(frac=1, random_state=42).reset_index(drop=True)
 
-X = data.drop(columns=['species'])
-y = data['species']
+# Split features and target
+X = data.drop(columns=['species'])  # Features
+y = data['species']  # Target variable
+
+# Split data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Scale features for better performance
+# Scale features for better model performance
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 X_train_scaled_df = pd.DataFrame(X_train_scaled, columns=X_train.columns)
 X_test_scaled_df = pd.DataFrame(X_test_scaled, columns=X_test.columns)
 
-# Initialize results storage
+# Initialize dictionary to store results from different methods
 results = {
     'Method': [],
     'Optimal Number of Features': [],
@@ -300,7 +330,8 @@ print(f"Selected Features: {best_features}")
 
 # Save the best model (in this case, the permutation importance model)
 print("\nSaving the best model...")
-# Create a dictionary with all components needed for prediction
+# Save the best performing model
+print("\nSaving the best model...")
 best_model_data = {
     'model': model_perm,
     'scaler': scaler,
@@ -309,7 +340,7 @@ best_model_data = {
     'method': 'Permutation Importance'
 }
 
-# Save the model to disk
+# Save model to disk for future use
 joblib.dump(best_model_data, 'best_penguin_model.joblib')
 print("Model saved as 'best_penguin_model.joblib'")
 
