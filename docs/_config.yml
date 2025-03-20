@@ -16,6 +16,7 @@ exclude:
   - .github/
   - __pycache__/
   - logs/
+  - "*.pyc"
   - Gemfile
   - Gemfile.lock
   - node_modules/
