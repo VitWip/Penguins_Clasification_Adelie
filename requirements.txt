@@ -1,0 +1,6 @@
+# Python dependencies for Penguins of Madagascar project
+seaborn>=0.11.0
+numpy>=1.19.5
+pandas>=1.3.0
+matplotlib>=3.4.0
+scikit-learn>=1.0.0
