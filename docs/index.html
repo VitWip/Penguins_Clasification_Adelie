@@ -140,12 +140,11 @@ title: Latest Penguin Classification
     }
 
     // Fetch and display the latest penguin data
-    fetch('_data/latest_prediction.json')
+    fetch('{{ site.baseurl }}/_data/latest_prediction.json')
     .then(response => response.json())
       .then(data => updatePenguinCard(data))
       .catch(error => {
         console.error('Error fetching penguin data:', error);
-
         document.getElementById('latest-penguin').innerHTML = 
           '<div class="error">Error loading penguin data</div>';
       });
