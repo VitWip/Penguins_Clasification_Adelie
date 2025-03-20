@@ -59,7 +59,7 @@ def main():
         # Check if model exists
         if not os.path.exists('best_penguin_model.joblib'):
             logging.info("Model not found. Training new model...")
-            import penguis
+            import penguins_training_model
             logging.info("Model training completed!\n")
         
         # Update database with new penguin data
