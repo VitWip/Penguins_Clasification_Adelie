@@ -5,10 +5,42 @@ title: Home
 
 <div class="container mt-5">
     <div class="row mt-4">
-        <div class="col-md-6">
-            <h2>Latest Predictions</h2>
-            <div id="predictions" class="list-group">
-                <!-- Predictions will be loaded here -->
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Latest Penguin Classification</h2>
+                </div>
+                <div class="card-body" id="latest-prediction">
+                    <!-- Latest prediction will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h2 class="mb-0">Historical Classifications</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="predictions-table">
+                            <thead>
+                                <tr>
+                                    <th>Date/Time</th>
+                                    <th>Species</th>
+                                    <th>Bill Length (mm)</th>
+                                    <th>Bill Depth (mm)</th>
+                                    <th>Flipper Length (mm)</th>
+                                    <th>Body Mass (g)</th>
+                                    <th>Confidence</th>
+                                </tr>
+                            </thead>
+                            <tbody id="predictions-body">
+                                <!-- Predictions will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -30,7 +62,70 @@ title: Home
         </div>
     </div>
 </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// Function to format date
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleString();
+}
+
+// Function to format confidence
+function formatConfidence(confidence) {
+    return (confidence).toFixed(1) + '%';
+}
+
+// Function to update the latest prediction
+function updateLatestPrediction(prediction) {
+    const latestPredictionHtml = `
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="text-primary mb-3">${prediction.species}</h3>
+                <p class="lead">Confidence: ${formatConfidence(prediction.confidence)}</p>
+                <p class="text-muted">Classified at: ${formatDate(prediction.datetime)}</p>
+            </div>
+            <div class="col-md-6">
+                <h4>Measurements:</h4>
+                <ul class="list-unstyled">
+                    <li>Bill Length: ${prediction.bill_length_mm} mm</li>
+                    <li>Bill Depth: ${prediction.bill_depth_mm} mm</li>
+                    <li>Flipper Length: ${prediction.flipper_length_mm} mm</li>
+                    <li>Body Mass: ${prediction.body_mass_g} g</li>
+                </ul>
+            </div>
+        </div>
+    `;
+    document.getElementById('latest-prediction').innerHTML = latestPredictionHtml;
+}
+
+// Function to update the predictions table
+function updatePredictionsTable(predictions) {
+    const tableBody = document.getElementById('predictions-body');
+    tableBody.innerHTML = predictions.map(p => `
+        <tr>
+            <td>${formatDate(p.datetime)}</td>
+            <td>${p.species}</td>
+            <td>${p.bill_length_mm}</td>
+            <td>${p.bill_depth_mm}</td>
+            <td>${p.flipper_length_mm}</td>
+            <td>${p.body_mass_g}</td>
+            <td>${formatConfidence(p.confidence)}</td>
+        </tr>
+    `).join('');
+}
+
+// Fetch and display predictions
+fetch('_data/predictions.json')
+    .then(response => response.json())
+    .then(predictions => {
+        if (predictions.length > 0) {
+            updateLatestPrediction(predictions[0]);
+            updatePredictionsTable(predictions);
+        }
+    })
+    .catch(error => console.error('Error loading predictions:', error));
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
