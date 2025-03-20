@@ -9,7 +9,7 @@ It extracts information from the SQLite database and creates JSON files containi
 2. Historical predictions
 3. Summary statistics
 
-The generated files are placed in the _data directory for Jekyll to use.
+The generated files are placed in the assets directory for Jekyll to use.
 """
 
 import sqlite3
@@ -18,8 +18,8 @@ import os
 from datetime import datetime
 
 def create_data_directory():
-    """Create _data directory if it doesn't exist."""
-    data_dir = os.path.join('docs', '_data')
+    """Create assets directory if it doesn't exist."""
+    data_dir = os.path.join('docs', 'assets')
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
     return data_dir
@@ -44,8 +44,7 @@ def get_latest_prediction(cursor):
             'bill_depth_mm': result[2],
             'flipper_length_mm': result[3],
             'body_mass_g': result[4],
-            'datetime': result[5],
-            'confidence': 95.5  # Example confidence value
+            'datetime': result[5]
         }
     return None
 
@@ -69,8 +68,7 @@ def get_historical_predictions(cursor, limit=50):
             'bill_depth_mm': row[2],
             'flipper_length_mm': row[3],
             'body_mass_g': row[4],
-            'datetime': row[5],
-            'confidence': 95.5  # Example confidence value
+            'datetime': row[5]
         })
     return predictions
 
@@ -91,7 +89,6 @@ def calculate_statistics(cursor):
     
     return {
         'total_predictions': total_predictions,
-        'average_confidence': 95.5,  # Example average confidence
         'species_distribution': {
             'adelie': species_dist.get('Adelie', 0),
             'chinstrap': species_dist.get('Chinstrap', 0),

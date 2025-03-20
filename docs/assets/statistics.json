@@ -1,6 +1,5 @@
 {
   "total_predictions": 1,
-  "average_confidence": 95.5,
   "species_distribution": {
     "adelie": 100.0,
     "chinstrap": 0,
