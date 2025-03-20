@@ -173,8 +173,6 @@
           <div class="card-body">
             <p>If data isn't loading, try one of these alternate paths:</p>
             <div class="d-flex flex-wrap gap-2">
-              <button class="btn btn-outline-primary" onclick="tryPath('./assets/latest_prediction.json', 'latest')">Relative Path (./assets/...)</button>
-              <button class="btn btn-outline-primary" onclick="tryPath('../assets/latest_prediction.json', 'latest')">Parent Directory (../assets/...)</button>
               <button class="btn btn-outline-primary" onclick="tryPath('assets/latest_prediction.json', 'latest')">No Leading Slash</button>
             </div>
           </div>
@@ -385,7 +383,7 @@
       const paths = {
         latest: `${basePath}`,
         statistics: `${basePath.replace('latest_prediction.json', 'statistics.json')}`,
-        history: `${basePath.replace('latest_prediction.json', 'prediction_history.json')}`
+        history: `${basePath.replace('latest_prediction.json', 'prediction.json')}`
       };
       
       // Clear previous errors
@@ -424,9 +422,9 @@
     }
     
     // Function to load all dashboard data
-    function loadDashboardData(latestPath = '/assets/latest_prediction.json', 
-                               statsPath = '/assets/statistics.json', 
-                               historyPath = '/assets/prediction.json') {
+    function loadDashboardData(latestPath = 'assets/latest_prediction.json', 
+                               statsPath = 'assets/statistics.json', 
+                               historyPath = 'assets/prediction.json') {
       // Fetch latest prediction
       fetch(latestPath)
         .then(response => {
