@@ -94,7 +94,7 @@ title: Latest Penguin Classification
     function updatePenguinCard(data) {
       const card = document.getElementById('latest-penguin');
       if (!data) {
-        card.innerHTML = '<div class="error" style="color: #d32f2f; padding: 15px; background: #ffebee; border-radius: 6px;">No penguin data available. The server returned an empty response.</div>';
+        card.innerHTML = '<div class="error">No penguin data available</div>';
         return;
       }
 
@@ -141,23 +141,13 @@ title: Latest Penguin Classification
 
     // Fetch and display the latest penguin data
     fetch('_data/latest_prediction.json')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
+    .then(response => response.json())
       .then(data => updatePenguinCard(data))
       .catch(error => {
         console.error('Error fetching penguin data:', error);
-        const errorMessage = error.name === 'SyntaxError' ?
-          'Invalid data received from server. Please try again later.' :
-          error.message.includes('HTTP error') ?
-          'Could not connect to the server. Please check your internet connection.' :
-          'An unexpected error occurred while loading penguin data.';
 
         document.getElementById('latest-penguin').innerHTML = 
-          `<div class="error" style="color: #d32f2f; padding: 15px; background: #ffebee; border-radius: 6px;">${errorMessage}</div>`;
+          '<div class="error">Error loading penguin data</div>';
       });
   </script>
 </div>
