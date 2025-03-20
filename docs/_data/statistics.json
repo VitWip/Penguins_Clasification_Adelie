@@ -1,0 +1,9 @@
+{
+  "total_predictions": 0,
+  "average_confidence": 95.5,
+  "species_distribution": {
+    "adelie": 33.3,
+    "chinstrap": 33.3,
+    "gentoo": 33.3
+  }
+}
