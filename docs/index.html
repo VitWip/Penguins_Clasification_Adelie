@@ -115,7 +115,7 @@ function updatePredictionsTable(predictions) {
 }
 
 // Fetch and display predictions
-fetch('_data/predictions.json')
+fetch('{{ site.baseurl }}/_data/predictions.json')
     .then(response => response.json())
     .then(predictions => {
         if (predictions && predictions.length > 0) {
