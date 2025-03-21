@@ -18,7 +18,7 @@ import requests
 import sqlite3
 import os
 from datetime import datetime
-from predict_penguin import predict_species
+from src.model.predict_penguin import predict_species
 import logging
 
 

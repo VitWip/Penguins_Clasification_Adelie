@@ -15,11 +15,14 @@ and potential errors across all components.
 """
 
 import logging
-from predict_penguin import predict_species
-from create_database import create_penguin_database
 import os
 from datetime import datetime
-from update_penguins import update_database_with_new_penguin
+
+# Import modules from their new locations
+from src.model.predict_penguin import predict_species
+from src.data.create_database import create_penguin_database
+from src.api.update_penguins import update_database_with_new_penguin
+from src.web.generate_site_data import generate_site_data
 
 # Create logs directory if it doesn't exist
 if not os.path.exists('logs'):
@@ -43,6 +46,7 @@ def main():
     1. Checks for and creates the database if it doesn't exist
     2. Verifies the existence of the trained model, importing training module if needed
     3. Updates the database with new penguin data from the API
+    4. Generates site data for the GitHub Pages website
     
     The function includes error handling and logging for all major operations.
     
@@ -59,11 +63,14 @@ def main():
         # Check if model exists
         if not os.path.exists('best_penguin_model.joblib'):
             logging.info("Model not found. Training new model...")
-            import penguins_training_model
+            from src.model import penguins_training_model
             logging.info("Model training completed!\n")
         
         # Update database with new penguin data
         update_database_with_new_penguin()
+
+        # Generate site data
+        generate_site_data()
 
     except Exception as e:
         logging.error(f"An error occurred in main execution: {str(e)}")
