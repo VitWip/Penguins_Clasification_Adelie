@@ -118,7 +118,10 @@
       <div class="col-lg-8">
         <div class="card" id="latest-prediction-card">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Latest Classified Penguin</span>
+            <div class="d-flex align-items-center">
+              <span>Latest Classified Penguin</span>
+              <span class="species-badge ${getSpeciesBadgeClass(data.species)} ms-3">${data.species}</span>
+            </div>
             <small id="latest-timestamp" class="text-muted"></small>
           </div>
           <div class="card-body" id="latest-penguin">
