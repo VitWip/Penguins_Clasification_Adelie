@@ -7,7 +7,7 @@ This project implements a machine learning system to classify penguins into thre
 
 ### 1. Data Collection
 - Initial dataset loaded from the seaborn library's penguins dataset
-- New penguin data fetched daily at 7:30 AM from the API endpoint: http://130.225.39.127:8000/new_penguin/
+- New penguin data fetched daily at 7:30 AM from the API endpoint
 - Data includes measurements: bill length, bill depth, flipper length, and body mass
 
 ### 2. Database Structure
