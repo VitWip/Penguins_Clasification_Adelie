@@ -120,7 +120,7 @@
           <div class="card-header d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
               <span>Latest Classified Penguin</span>
-              <span class="species-badge ${getSpeciesBadgeClass(data.species)} ms-3">${data.species}</span>
+              <span class="species-badge ${getSpeciesBadgeClass(data.species)} ms-3" id="species-badge">${data.species}</span>
             </div>
             <small id="latest-timestamp" class="text-muted"></small>
           </div>
@@ -197,6 +197,7 @@
     function updateLatestPenguin(data) {
       const card = document.getElementById('latest-penguin');
       const timestampElement = document.getElementById('latest-timestamp');
+      const speciesBadge = document.getElementById('species-badge');
       
       if (!data) {
         card.innerHTML = '<div class="error">No penguin data available</div>';
@@ -207,6 +208,12 @@
         // Update timestamp
         if (data.datetime) {
           timestampElement.textContent = `Classified on: ${formatDateTime(data.datetime)}`;
+        }
+        
+        // Update species badge
+        if (speciesBadge) {
+          speciesBadge.className = `species-badge ${getSpeciesBadgeClass(data.species)} ms-3`;
+          speciesBadge.textContent = data.species;
         }
         
         
