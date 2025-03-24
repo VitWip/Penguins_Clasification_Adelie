@@ -2,7 +2,7 @@ name: Daily Penguin Classification
 
 on:
   schedule:
-    - cron: '0 7 * * *'  # Run at 7 AM UTC daily
+    - cron: '30 7 * * *'  # Run at 7 AM UTC daily
   workflow_dispatch:  # Allow manual trigger
 
 concurrency:
