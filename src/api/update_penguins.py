@@ -52,7 +52,8 @@ def update_database_with_new_penguin():
         penguin_data = response.json()
         
         # Connect to SQLite database to check for existing entry
-        conn = sqlite3.connect('penguins.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'src', 'data', 'penguins.db')
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
 
         # Check if datetime already exists
@@ -81,9 +82,9 @@ def update_database_with_new_penguin():
         
         # Insert new penguin data
         cursor.execute('''
-        INSERT INTO penguins (species, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, is_original)
-        VALUES (?, ?, ?, ?, ?, 1)
-        ''', (species, bill_length, bill_depth, flipper_length, body_mass))
+        INSERT INTO penguins (species, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, confidence, is_original)
+        VALUES (?, ?, ?, ?, ?, ?, 1)
+        ''', (species, bill_length, bill_depth, flipper_length, body_mass, f"{confidence:.2%}"))
         
         # Get the ID of the newly inserted penguin
         penguin_id = cursor.lastrowid

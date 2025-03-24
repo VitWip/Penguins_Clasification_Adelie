@@ -28,7 +28,7 @@ def get_latest_prediction(cursor):
     """Fetch the most recent prediction from the database."""
     cursor.execute("""
         SELECT p.species, p.bill_length_mm, p.bill_depth_mm, p.flipper_length_mm, 
-               p.body_mass_g, pd.date
+               p.body_mass_g, p.confidence, pd.date
         FROM penguins p
         JOIN penguin_dates pd ON p.id = pd.id
         WHERE p.is_original = 1
@@ -44,7 +44,8 @@ def get_latest_prediction(cursor):
             'bill_depth_mm': result[2],
             'flipper_length_mm': result[3],
             'body_mass_g': result[4],
-            'datetime': result[5]
+            'confidence': result[5],
+            'datetime': result[6]
         }
     return None
 
@@ -52,7 +53,7 @@ def get_historical_predictions(cursor, limit=50):
     """Fetch historical predictions from the database."""
     cursor.execute("""
         SELECT p.species, p.bill_length_mm, p.bill_depth_mm, p.flipper_length_mm, 
-               p.body_mass_g, pd.date
+               p.body_mass_g, p.confidence, pd.date
         FROM penguins p
         JOIN penguin_dates pd ON p.id = pd.id
         WHERE p.is_original = 1
@@ -68,7 +69,8 @@ def get_historical_predictions(cursor, limit=50):
             'bill_depth_mm': row[2],
             'flipper_length_mm': row[3],
             'body_mass_g': row[4],
-            'datetime': row[5]
+            'confidence': row[5],
+            'datetime': row[6]
         })
     return predictions
 
@@ -102,7 +104,8 @@ def generate_site_data():
     
     try:
         # Connect to the database
-        conn = sqlite3.connect('penguins.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'src', 'data', 'penguins.db')
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         
         # Generate latest prediction data

@@ -12,6 +12,7 @@ The module includes functions for both single predictions and batch example pred
 making it suitable for both interactive use and automated processing.
 """
 
+import os
 import sys
 import pandas as pd
 import numpy as np
@@ -34,7 +35,8 @@ def predict_species(bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_
     """
     # Load the saved model
     logging.info("Loading penguin classification model...")
-    loaded_model_data = joblib.load('best_penguin_model.joblib')
+    model_path = os.path.join(os.path.dirname(__file__), 'best_penguin_model.joblib')
+    loaded_model_data = joblib.load(model_path)
     model = loaded_model_data['model']
     scaler = loaded_model_data['scaler']
     features = loaded_model_data['features']

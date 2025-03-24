@@ -118,7 +118,10 @@
       <div class="col-lg-8">
         <div class="card" id="latest-prediction-card">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <span>Latest Classified Penguin</span>
+            <div class="d-flex align-items-center">
+              <span>Latest Classified Penguin</span>
+              <span class="species-badge ${getSpeciesBadgeClass(data.species)} ms-3" id="species-badge">${data.species}</span>
+            </div>
             <small id="latest-timestamp" class="text-muted"></small>
           </div>
           <div class="card-body" id="latest-penguin">
@@ -194,6 +197,7 @@
     function updateLatestPenguin(data) {
       const card = document.getElementById('latest-penguin');
       const timestampElement = document.getElementById('latest-timestamp');
+      const speciesBadge = document.getElementById('species-badge');
       
       if (!data) {
         card.innerHTML = '<div class="error">No penguin data available</div>';
@@ -204,6 +208,12 @@
         // Update timestamp
         if (data.datetime) {
           timestampElement.textContent = `Classified on: ${formatDateTime(data.datetime)}`;
+        }
+        
+        // Update species badge
+        if (speciesBadge) {
+          speciesBadge.className = `species-badge ${getSpeciesBadgeClass(data.species)} ms-3`;
+          speciesBadge.textContent = data.species;
         }
         
         
@@ -245,6 +255,19 @@
               </div>
             </div>
           </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Prediction Confidence</h5>
+                  <p class="card-text fs-4">
+                    <span class="species-badge ${getSpeciesBadgeClass(data.species)}">${data.species}</span>
+                    <span class="ms-2">${data.confidence} confidence</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         `;
       } catch (error) {
         card.innerHTML = `<div class="error">Error processing penguin data: ${error.message}. Please try refreshing the page.</div>`;
@@ -262,10 +285,11 @@
       }
       
       try {
-        // Create the distribution bar
-        const adeliePercent = data.species_distribution.adelie;
-        const chinstrapPercent = data.species_distribution.chinstrap;
-        const gentooPercent = data.species_distribution.gentoo;
+        // Calculate the distribution percentages
+        const total = data.species_distribution.adelie + data.species_distribution.chinstrap + data.species_distribution.gentoo;
+        const adeliePercent = (data.species_distribution.adelie / total * 100).toFixed(1);
+        const chinstrapPercent = (data.species_distribution.chinstrap / total * 100).toFixed(1);
+        const gentooPercent = (data.species_distribution.gentoo / total * 100).toFixed(1);
         
         container.innerHTML = `
           <div class="stat-card mb-4">
@@ -336,6 +360,7 @@
             <tr>
               <td>
                 <span class="species-badge ${getSpeciesBadgeClass(prediction.species)}">${prediction.species}</span>
+                <small class="d-block text-muted">${prediction.confidence}</small>
               </td>
               <td>${prediction.bill_length_mm.toFixed(2)} mm</td>
               <td>${prediction.bill_depth_mm.toFixed(2)} mm</td>

@@ -33,7 +33,8 @@ import joblib
 
 # Load and prepare data
 # Load data from SQLite database, excluding original entries (is_original != 1)
-conn = sqlite3.connect('penguins.db')
+db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'src', 'data', 'penguins.db')
+conn = sqlite3.connect(db_path)
 query = "SELECT species, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g FROM penguins WHERE is_original != 1"
 data = pd.read_sql_query(query, conn)
 conn.close()
