@@ -1,6 +1,14 @@
 [
   {
     "species": "Chinstrap",
+    "bill_length_mm": 42.589171842727794,
+    "bill_depth_mm": 16.153400750139337,
+    "flipper_length_mm": 179.69861861784906,
+    "body_mass_g": 3864.4108543520533,
+    "datetime": "2025-03-24T07:59:00+00:00"
+  },
+  {
+    "species": "Chinstrap",
     "bill_length_mm": 49.768358009041414,
     "bill_depth_mm": 15.207950439917802,
     "flipper_length_mm": 190.64758565247874,
