@@ -252,7 +252,7 @@
                   <h5 class="card-title">Prediction Confidence</h5>
                   <p class="card-text fs-4">
                     <span class="species-badge ${getSpeciesBadgeClass(data.species)}">${data.species}</span>
-                    <span class="ms-2">${(data.confidence * 100).toFixed(1)}% confidence</span>
+                    <span class="ms-2">${data.confidence} confidence</span>
                   </p>
                 </div>
               </div>
@@ -350,7 +350,7 @@
             <tr>
               <td>
                 <span class="species-badge ${getSpeciesBadgeClass(prediction.species)}">${prediction.species}</span>
-                <small class="d-block text-muted">${(prediction.confidence * 100).toFixed(1)}% confidence</small>
+                <small class="d-block text-muted">${prediction.confidence}</small>
               </td>
               <td>${prediction.bill_length_mm.toFixed(2)} mm</td>
               <td>${prediction.bill_depth_mm.toFixed(2)} mm</td>
