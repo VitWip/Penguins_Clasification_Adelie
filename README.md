@@ -5,6 +5,9 @@ This project implements a machine learning system to classify penguins into thre
 ## Output of the project
 https://vitwip.github.io/Penguins_Clasification_Adelie/
 
+## Output of the project
+https://vitwip.github.io/Penguins_Clasification_Adelie/
+
 ## Project Components
 
 ### 1. Data Collection
