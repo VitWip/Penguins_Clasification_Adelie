@@ -55,13 +55,15 @@ def main():
     """
     try:
         # Check if database exists, if not create it
-        if not os.path.exists('penguins.db'):
+        db_path = os.path.join(os.path.dirname(__file__), 'src', 'data', 'penguins.db')
+        if not os.path.exists(db_path):
             logging.info("Database not found. Creating new database...")
             create_penguin_database()
             logging.info("Database created successfully!\n")
         
         # Check if model exists
-        if not os.path.exists('best_penguin_model.joblib'):
+        model_path = os.path.join(os.path.dirname(__file__), 'src', 'model', 'best_penguin_model.joblib')
+        if not os.path.exists(model_path):
             logging.info("Model not found. Training new model...")
             from src.model import penguins_training_model
             logging.info("Model training completed!\n")

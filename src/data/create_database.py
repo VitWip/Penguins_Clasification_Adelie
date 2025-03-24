@@ -42,7 +42,8 @@ def create_penguin_database():
     
     # Create SQLite database
     try:
-        conn = sqlite3.connect('penguins.db')
+        db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'src', 'data', 'penguins.db')
+        conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         
         # Create tables
@@ -56,6 +57,7 @@ def create_penguin_database():
             bill_depth_mm REAL,
             flipper_length_mm REAL,
             body_mass_g REAL,
+            confidence TEXT DEFAULT '100.00%',
             is_original INTEGER DEFAULT 1
         )
         ''')
@@ -71,8 +73,8 @@ def create_penguin_database():
         logging.info("Inserting data into database...")
         for _, row in data.iterrows():
             cursor.execute('''
-            INSERT INTO penguins (species, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, is_original)
-            VALUES (?, ?, ?, ?, ?, 0)
+            INSERT INTO penguins (species, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, confidence, is_original)
+            VALUES (?, ?, ?, ?, ?, '100.00%', 0)
             ''', (
                 row['species'],
                 row['bill_length_mm'],
