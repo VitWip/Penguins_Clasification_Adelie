@@ -3,6 +3,9 @@
 ## Overview
 This project implements a machine learning system to classify penguins into three different species (Adelie, Chinstrap, and Gentoo) based on their physical measurements. The system fetches new penguin data daily from an API, predicts the species using a trained Random Forest model, and stores the results in a SQLite database.
 
+## Output of the project
+https://vitwip.github.io/Penguins_Clasification_Adelie/
+
 ## Project Components
 
 ### 1. Data Collection
