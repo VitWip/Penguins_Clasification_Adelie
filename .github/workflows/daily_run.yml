@@ -2,7 +2,7 @@ name: Daily Penguin Classification
 
 on:
   schedule:
-    - cron: '30 7 * * *'  # Run at 7 AM UTC daily
+    - cron: '30 8 * * *'  # Run at 7 AM UTC daily
   workflow_dispatch:  # Allow manual trigger
 
 concurrency:
@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   run-classification:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
     
