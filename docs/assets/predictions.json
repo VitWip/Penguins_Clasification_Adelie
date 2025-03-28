@@ -1,5 +1,13 @@
 [
   {
+    "species": "Adelie",
+    "bill_length_mm": 39.35703563483552,
+    "bill_depth_mm": 16.811409132064792,
+    "flipper_length_mm": 220.61808061046793,
+    "body_mass_g": 3819.7255422628805,
+    "datetime": "2025-03-28T07:59:00+00:00"
+  },
+  {
     "species": "Chinstrap",
     "bill_length_mm": 45.687098989175226,
     "bill_depth_mm": 17.81369500094816,
