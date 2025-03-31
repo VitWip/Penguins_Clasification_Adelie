@@ -1,5 +1,13 @@
 [
   {
+    "species": "Adelie",
+    "bill_length_mm": 35.368774505224955,
+    "bill_depth_mm": 18.356426743167795,
+    "flipper_length_mm": 203.2520792860286,
+    "body_mass_g": 4619.562193170389,
+    "datetime": "2025-03-31T07:59:00+00:00"
+  },
+  {
     "species": "Gentoo",
     "bill_length_mm": 43.159113044647164,
     "bill_depth_mm": 14.663447136893936,

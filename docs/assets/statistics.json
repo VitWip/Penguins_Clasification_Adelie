@@ -1,7 +1,7 @@
 {
-  "total_predictions": 11,
+  "total_predictions": 12,
   "species_distribution": {
-    "adelie": 166.7,
+    "adelie": 200.0,
     "chinstrap": 166.7,
     "gentoo": 33.3
   }
